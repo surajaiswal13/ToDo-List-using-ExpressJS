@@ -6,12 +6,25 @@
   </head>
   <body>
 
-<% if (kindOfDay === "Saturday" || kindOfDay === "Sunday") { %>
-    <h1 style="color: purple">It's a <%= kindOfDay %>!</h1>
-<% } else { %>
-    <h1 style="color: blue">It's a <%= kindOfDay %>!</h1>
-<% } %>
+    <!-- <% if (kindOfDay === "Saturday" || kindOfDay === "Sunday") { %>
+        <h1 style="color: purple">It's a <%= kindOfDay %>!</h1>
+    <% } else { %>
+        <h1 style="color: blue">It's a <%= kindOfDay %>!</h1>
+    <% } %> -->
 
+    <h1> <%= kindOfDay %> </h1>
+
+    <ul>
+      <li>Buy Food</li>
+      <li>Cook Food</li>
+      <li>Eat Food</li>
+      <li> <%= newItem %> </li>
+    </ul>
+
+    <form class="" action="/" method="post">
+      <input type="text" name="newItem">
+      <button type="submit" name="button">Add</button>
+    </form>
 
   </body>
 </html>
