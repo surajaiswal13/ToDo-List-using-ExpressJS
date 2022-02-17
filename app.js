@@ -7,7 +7,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
-var newItems = []
+app.use(express.static("public"))
+
+var newItems = ["Buy Food", "Cook Food", "Eat Food"]
 
 app.get("/", (req, res) => {
 
