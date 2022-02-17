@@ -7,6 +7,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
+var newItems = []
+
 app.get("/", (req, res) => {
 
   var today = new Date();
@@ -74,15 +76,17 @@ app.get("/", (req, res) => {
   var day = today.toLocaleDateString("en-US", options);
 
   // render is ejs method it will render context to list.ejs
-  res.render("list", {kindOfDay: day});
+  res.render("list", {kindOfDay: day, newlistItem: newItems});
 
 });
 
 app.post("/", (req, res) => {
-  var newItem = req.body.newItem;
+  newItem = req.body.newItem;
   console.log(req.body.newItem);
 
-  res.render("list", {newItem: newItem});
+  newItems.push(newItem)
+  res.redirect("/")
+  // res.render("list", {newlistItem: newItem});
 })
 
 app.listen(3000, () => {
