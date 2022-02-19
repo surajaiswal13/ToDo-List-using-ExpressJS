@@ -86,8 +86,6 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let newItem = req.body.newItem;
-  console.log("TESTING");
-  console.log(req.body);
   if (req.body.list === "work") {
     workItems.push(newItem);
     res.redirect("/work");
