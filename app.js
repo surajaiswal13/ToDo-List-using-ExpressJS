@@ -85,25 +85,34 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  newItem = req.body.newItem;
+  let newItem = req.body.newItem;
+  console.log("TESTING");
+  console.log(req.body);
+  if (req.body.list === "work") {
+    workItems.push(newItem);
+    res.redirect("/work");
+  } else {
+    newItems.push(newItem);
+    res.redirect("/");
+  }
   console.log(req.body.newItem);
 
-  newItems.push(newItem)
-  res.redirect("/")
+  // newItems.push(newItem)
+  // res.redirect("/")
   // res.render("list", {newlistItem: newItem});
 })
 
 // WORK SECTION
 
 app.get("/work", (req, res) => {
-  res.render("list", {listTitle: "Work List", newlistItem: workItems});
+  res.render("list", {listTitle: "work", newlistItem: workItems});
 });
 
-app.post("/work", (req, res) => {
-  let item = req.body.newItem;
-  workItems.push(item);
-  res.redirect("/work");
-})
+// app.post("/work", (req, res) => {
+//   let item = req.body.newItem;
+//   workItems.push(item);
+//   res.redirect("/work");
+// })
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
