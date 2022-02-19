@@ -11,6 +11,8 @@ app.use(express.static("public"))
 
 var newItems = ["Buy Food", "Cook Food", "Eat Food"]
 
+var workItems = [];
+
 app.get("/", (req, res) => {
 
   var today = new Date();
@@ -78,7 +80,7 @@ app.get("/", (req, res) => {
   var day = today.toLocaleDateString("en-US", options);
 
   // render is ejs method it will render context to list.ejs
-  res.render("list", {kindOfDay: day, newlistItem: newItems});
+  res.render("list", {listTitle: day, newlistItem: newItems});
 
 });
 
@@ -89,6 +91,18 @@ app.post("/", (req, res) => {
   newItems.push(newItem)
   res.redirect("/")
   // res.render("list", {newlistItem: newItem});
+})
+
+// WORK SECTION
+
+app.get("/work", (req, res) => {
+  res.render("list", {listTitle: "Work List", newlistItem: workItems});
+});
+
+app.post("/work", (req, res) => {
+  let item = req.body.newItem;
+  workItems.push(item);
+  res.redirect("/work");
 })
 
 app.listen(3000, () => {
