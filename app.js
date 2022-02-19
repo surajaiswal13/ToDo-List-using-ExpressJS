@@ -16,7 +16,7 @@ var workItems = [];
 
 app.get("/", (req, res) => {
 
-  let day = date();
+  let day = date.getDate();
 
   // render is ejs method it will render context to list.ejs
   res.render("list", {listTitle: day, newlistItem: newItems});
