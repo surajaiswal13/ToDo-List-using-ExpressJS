@@ -86,6 +86,7 @@ app.post("/", (req, res) => {
   const item = new Item({
     item: newItem
   });
+
   let day = date.getDate();
 
   if (listName === day) {
@@ -123,14 +124,31 @@ app.post("/delete", function(req, res) {
   console.log(req.body.checkbox);
   const checkedItemId = req.body.checkbox;
 
-  Item.findByIdAndRemove(checkedItemId, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(" Item SuccessFully Deleted !");
-      res.redirect("/")
-    }
-  })
+  // Dynamic List Delete
+  const listName = req.body.listName;
+
+  let day = date.getDate();
+
+  if (listName === date) {
+
+    Item.findByIdAndRemove(checkedItemId, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(" Item SuccessFully Deleted !");
+        res.redirect("/")
+      }
+    })
+
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}, function(err, foundList){
+      if (!err){
+        res.redirect("/"+ listName)
+      }
+    })
+  }
+
+
 
 });
 
