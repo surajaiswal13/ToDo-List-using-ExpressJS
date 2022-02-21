@@ -1,25 +1,70 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+// DB
+const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.set("view engine", "ejs");
-
 app.use(express.static("public"))
 
-var newItems = ["Buy Food", "Cook Food", "Eat Food"]
+mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true});
 
-var workItems = [];
+// DataBase Schema
+const itemsSchema = {
+  item: String
+};
+
+// Mongoose Model (<singularVersionOfCollectionName>, <SchemaName>)
+const Item = mongoose.model("Item", itemsSchema)
+
+// Manually Adding Item to DB
+const Item1 = new Item ({
+  item: "Welcome to todolist !"
+});
+
+const Item2 = new Item ({
+  item: "Hit the + button to add a new item."
+});
+
+const Item3 = new Item ({
+  item: "<-- Hit this to delete an item."
+});
+
+const defaultItems = [Item1, Item2, Item3];
+
+
+// var newItems = ["Buy Food", "Cook Food", "Eat Food"]
+//
+// var workItems = [];
+
 
 app.get("/", (req, res) => {
 
-  let day = date.getDate();
+  Item.find({}, (err, foundItems) => {
 
-  // render is ejs method it will render context to list.ejs
-  res.render("list", {listTitle: day, newlistItem: newItems});
+    if (foundItems.length === 0) {
+      Item.insertMany(defaultItems, function(err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Default Items Added Sucessfully to DB.");
+        }
+      });
+
+      res.redirect("/");
+      
+    } else {
+      // console.log(foundItems);
+      let day = date.getDate();
+
+      // render is ejs method it will render context to list.ejs
+      res.render("list", {listTitle: day, newlistItem: foundItems});
+    }
+
+  });
 
 });
 
