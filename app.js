@@ -11,7 +11,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true});
+// mongodb+srv://<username>:<password>@cluster0.ckltw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+mongoose.connect("mongodb+srv://<username>:<password>@cluster0.ckltw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {useNewUrlParser: true});
 
 // DataBase Schema
 const itemsSchema = {
@@ -80,9 +82,9 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let newItem = req.body.newItem;
-  // console.log(newItem);
+  console.log(newItem);
   let listName = req.body.list;
-  // console.log(listName);
+  console.log(listName);
 
   const item = new Item({
     item: newItem
@@ -130,7 +132,7 @@ app.post("/delete", function(req, res) {
 
   let day = date.getDate();
 
-  if (listName === date) {
+  if (listName === day) {
 
     Item.findByIdAndRemove(checkedItemId, (err) => {
       if (err) {
