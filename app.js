@@ -35,11 +35,21 @@ const Item3 = new Item ({
 
 const defaultItems = [Item1, Item2, Item3];
 
+// *********** Dynamic Multiple Lists Schema ***********
+
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+}
+
+const List = mongoose.model("List", listSchema);
 
 // var newItems = ["Buy Food", "Cook Food", "Eat Food"]
 //
 // var workItems = [];
 
+
+// ********** SINGLE LISTS ***********
 
 // INSERT RECORD
 
@@ -102,6 +112,40 @@ app.post("/delete", function(req, res) {
   })
 
 });
+
+
+// ************** Dynamic Multiple Lists **************
+
+app.get("/:customListName", (req, res) => {
+  console.log(req.params.customListName);
+
+  const customListName = req.params.customListName
+
+  List.findOne({name: customListName}, function (err, foundList) {
+    if (!err) {
+      if (!foundList){
+        console.log("Doesn't exists!");
+
+        // CREATE A NEW LIST
+        const list = new List({
+          name: customListName,
+          items: defaultItems
+        })
+
+        list.save();
+        res.redirect("/"+customListName)
+
+      } else {
+        console.log("Exists!");
+
+        // SHOW AN EXISTING LIST
+
+        res.render("list", {listTitle: foundList.name, newlistItem: foundList.items})
+      }
+    }
+  })
+
+})
 
 // WORK SECTION
 
