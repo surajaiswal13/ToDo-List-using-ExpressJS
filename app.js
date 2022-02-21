@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 
-// mongodb+srv://<username>:<password>@cluster0.ckltw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+// mongodb+srv://admin-suraj:<password>@cluster0.ckltw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
-mongoose.connect("mongodb+srv://<username>:<password>@cluster0.ckltw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://admin-suraj:suraj1234@cluster0.ckltw.mongodb.net/todolistDB", {useNewUrlParser: true});
 
 // DataBase Schema
 const itemsSchema = {
@@ -201,12 +201,17 @@ app.get("/work", (req, res) => {
 //   res.redirect("/work");
 // })
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
-
 // ABOUT US
 
 app.get("/about", (req, res) => {
   res.render("about")
 })
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+
+app.listen(port, () => {
+  console.log("Server is running on port 3000");
+});
