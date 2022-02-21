@@ -15,10 +15,14 @@
     <div class="box">
       <% for(var i=0; i<newlistItem.length; i++) { %>
 
-      <div class="item">
-        <input type="checkbox">
-        <p> <%= newlistItem[i].item %> </p>
-      </div>
+      <form action="/delete" method="post">
+
+        <div class="item">
+          <input type="checkbox" name="checkbox" value="<%= newlistItem[i]._id %>" onChange="this.form.submit()">
+          <p> <%= newlistItem[i].item %> </p>
+        </div>
+
+      </form>
 
       <% } %>
 

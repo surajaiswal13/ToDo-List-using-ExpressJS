@@ -41,6 +41,8 @@ const defaultItems = [Item1, Item2, Item3];
 // var workItems = [];
 
 
+// INSERT RECORD
+
 app.get("/", (req, res) => {
 
   Item.find({}, (err, foundItems) => {
@@ -55,7 +57,7 @@ app.get("/", (req, res) => {
       });
 
       res.redirect("/");
-      
+
     } else {
       // console.log(foundItems);
       let day = date.getDate();
@@ -83,6 +85,23 @@ app.post("/", (req, res) => {
   // res.redirect("/")
   // res.render("list", {newlistItem: newItem});
 })
+
+// DELETE RECORDS
+
+app.post("/delete", function(req, res) {
+  console.log(req.body.checkbox);
+  const checkedItemId = req.body.checkbox;
+
+  Item.findByIdAndRemove(checkedItemId, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(" Item SuccessFully Deleted !");
+      res.redirect("/")
+    }
+  })
+
+});
 
 // WORK SECTION
 
