@@ -54,18 +54,15 @@ const List = mongoose.model("List", listSchema);
 // INSERT RECORD
 
 app.get("/", (req, res) => {
-
   Item.find({}, (err, foundItems) => {
-
     if (foundItems.length === 0) {
       Item.insertMany(defaultItems, function(err) {
+        console.log(err);
         if (err) {
-          console.log(err);
-        } else {
           console.log("Default Items Added Sucessfully to DB.");
+        } else {
         }
       });
-
       res.redirect("/");
 
     } else {
@@ -82,14 +79,38 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let newItem = req.body.newItem;
-  if (req.body.list === "work") {
-    workItems.push(newItem);
-    res.redirect("/work");
-  } else {
-    newItems.push(newItem);
+  // console.log(newItem);
+  let listName = req.body.list;
+  // console.log(listName);
+
+  const item = new Item({
+    item: newItem
+  });
+  let day = date.getDate();
+
+  if (listName === day) {
+    item.save();
     res.redirect("/");
+  } else {
+    List.findOne({name: listName}, function(err, foundList) {
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + listName);
+    })
   }
-  console.log(req.body.newItem);
+
+  // item.save()
+  // res.redirect("/")
+
+
+  // if (req.body.list === "work") {
+  //   workItems.push(newItem);
+  //   res.redirect("/work");
+  // } else {
+  //   newItems.push(newItem);
+  //   res.redirect("/");
+  // }
+  // console.log(req.body.newItem);
 
   // newItems.push(newItem)
   // res.redirect("/")
